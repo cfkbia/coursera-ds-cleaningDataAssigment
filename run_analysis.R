@@ -36,11 +36,13 @@ library(dplyr)
 
   outputDataSet <- rbind(datasetTest, datasetTrain)
   
-  outputDataSet <- outputDataSet[,grep("mean|subjectid|activity", colnames(outputDataSet))]
+  outputDataSet <- outputDataSet[,grep("mean|subjectid|activity|std", colnames(outputDataSet))]
 ##Remove unsued objects from memory
   remove(list = c("activitylabels", "xtrain", "ytrain", "subjecttrain","features", "xtest", "ytest", "subjectest", "datasetTrain", "datasetTest"))
 
+##Calculate average for all measures in outputDataSet
 by_activity_subject <-  group_by(outputDataSet, activityid, subjectid, activitydescription)
 aggr_data<-summarise_all(by_activity_subject, mean)
 
-aggregate(outputDataSet, )
+#Save output data into text file
+write.table(aggr_data, "aggr_data.txt", row.names = FALSE)
